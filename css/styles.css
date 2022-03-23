@@ -40,6 +40,7 @@ html {
     margin: 0px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 5px;
     flex: 0 0 420px;
 }
@@ -50,8 +51,23 @@ html {
     font-size: 40px;
     padding: none;
     color: black;
-    /* border: solid lightgray 1px; */
-    /* background-color: darkgray; */
     margin: none;
-    flex: 1 0 75px;
+    flex: 0 1 75px;
+}
+
+.equal-button {
+    width: 155px;
+    flex: 0 1 155px;
+}
+
+.special-key {
+
+}
+
+.number-key {
+
+}
+
+.operator-key {
+
 }
