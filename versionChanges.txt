@@ -1,1 +1,5 @@
-Remove unused variable
+Disable keyboard when error raises. Solve a bug
+
+The bug was caused by the focus a button got after
+clicking on it. If an entry was done from the
+keyboard, the last button got clicked again.

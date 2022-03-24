@@ -35,7 +35,6 @@ const specialButtons = document.querySelectorAll('.special-key')
 const enablableArray = Array.from(numberButtons).
     concat(Array.from(operatorButtons));
 
-window.addEventListener('keydown', pushKey);
 
 
 resetCalc();
@@ -100,6 +99,7 @@ function pushKey(e) {
 function clickButton(e) {
     pushedButton.key = this.getAttribute('id');
     pushedButton.type = this.getAttribute('data-key');
+    this.blur();
     switchAction();
 }
 
@@ -284,6 +284,7 @@ function disableButtons() {
         x.removeEventListener('click', clickButton);
         x.setAttribute('style', 'pointer-events: none;');
     }
+    window.removeEventListener('keydown', pushKey);
 }
 
 function enableButtons() {
@@ -291,6 +292,7 @@ function enableButtons() {
         x.addEventListener('click', clickButton);
         x.setAttribute('style', 'pointer-events: auto;');
     }
+    window.addEventListener('keydown', pushKey);
     specialButtons.forEach(x => 
         x.addEventListener('click', clickButton));
 }
