@@ -1,16 +1,21 @@
-const buttonLabels = [  'AC', '\u00B1', '\u215F', '/',
-                        '7', '8', '9', '*',
-                        '4', '5', '6', '-',
-                        '1', '2', '3', '+',
-                        '.', '0', '='];
+const buttonLabels = [  'AC', '\u232B',
+                        '\u00B1\u2A2F', '\u215F\u2A2F', 
+                        '\u221A\u2A2F', '\u2A2F\u00B2',
+                        '7', '8', '9', '/',
+                        '4', '5', '6', 'x',
+                        '1', '2', '3', '-',
+                        '.', '0', '=', '+'];
 const specialKeys = ['AC'];
+const bigButtonKeys = ['AC', '\u232B'];
 const numberKeys = ['7', '8', '9',
                     '4', '5', '6',
                     '1', '2', '3',
-                    '.', '0'];
-const operatorKeys = ['\u00B1', '\u215F', '/',
-                        '*', '-', '+', '='];
-const errorArray = ['Overflow', 'Div. by zero']
+                    '.', '0', '\u232B'];
+const operatorKeys = ['\u00B1\u2A2F', '\u215F\u2A2F', 
+                        '\u221A\u2A2F', '\u2A2F\u00B2',
+                        '/', 'x', '-', '+', '='];
+const errorArray = ['Overflow', 'Div. by zero',
+                    'Im. Number']
 const maxPlaces = 13;
 
 let pushedButton;
@@ -27,6 +32,10 @@ const numberButtons = document.querySelectorAll('.number-key')
 const operatorButtons = document.querySelectorAll('.operator-key')
 const specialButtons = document.querySelectorAll('.special-key')
 
+const enablableArray = Array.from(numberButtons).
+    concat(Array.from(operatorButtons));
+
+
 resetCalc();
 
 
@@ -35,11 +44,12 @@ function initializeButtons() {
     for (let calcButtonLabel of buttonLabels) {
         const key = document.createElement('button');
         key.classList.add('calc-button');
-        if (calcButtonLabel === '=') key.classList.add('equal-button');
         if (specialKeys.includes(calcButtonLabel)) {
             key.classList.add('special-key');
             key.setAttribute('data-key', `special-key`);
         }
+        if (bigButtonKeys.includes(calcButtonLabel))
+            key.classList.add('big-button');
         if (numberKeys.includes(calcButtonLabel)) {
             key.classList.add('number-key');
             key.setAttribute('data-key', `number-key`);
@@ -70,12 +80,18 @@ function clickButton(e) {
 }
 
 function pushNumber() {
-    if (pushedButton.key == '.') {
-            if (!currentDisplayString.includes('.')) {
+    switch (pushedButton.key) {
+        case '.':
+            if (!currentDisplayString.includes('.'))
                 currentDisplayString += pushedButton.key;
-            }
-    } else {
-            /* We book one place for . and one for - sign */
+            break;
+        case buttonLabels[1]: // Backspace
+            if (currentDisplayString == '0') return;
+            currentDisplayString = currentDisplayString.slice(0, -1);
+            if (currentDisplayString.length == 0)
+                currentDisplayString = '0';
+            break;
+        default:
             if (numberDigits() >= maxPlaces - 2) return;
             if (currentDisplayString == '0') {
                 currentDisplayString = pushedButton.key;
@@ -88,7 +104,7 @@ function pushNumber() {
 
 function pushOperator() {
     switch (pushedButton.key) {
-        case '\u00B1':
+        case buttonLabels[2]: // +/- x
             if (Number(currentDisplayString) == 0) return;
             if (currentDisplayString[0] == '-') {
                 currentDisplayString = 
@@ -98,9 +114,23 @@ function pushOperator() {
             }
             parseDisplay();
             break;
-        case '\u215F':
-            if (Number(currentDisplayString) == 0) return;
+        case buttonLabels[3]: // 1/x
+            if (Number(currentDisplayString) == 0) {
+                currentDisplayString = raiseError(1);
+                updateDisplay();
+                return;
+            }
             currentDisplayString = 1/currentDisplayString;
+            parseDisplay();
+            break;
+        case buttonLabels[4]: // sqrt(x)
+            if (Number(currentDisplayString) == 0) return;
+            currentDisplayString = sqrt(currentDisplayString);
+            parseDisplay();
+            break;
+        case buttonLabels[5]: // x^2
+            if (Number(currentDisplayString) == 0) return;
+            currentDisplayString = square(currentDisplayString);
             parseDisplay();
             break;
         case '=':
@@ -147,7 +177,7 @@ function parseDisplay() {
     const maxDecLength = maxPlaces - 2 - intPart.length ;
     const decLength = Math.min(initDecLength, maxDecLength)
     if (maxDecLength < 0) {
-        currentDisplayString = raiseError[0];
+        currentDisplayString = raiseError(0);
     } else if (currentDisplayString.slice(-1) != '.' &&
             initDecLength != decLength) {
                 currentDisplayString =
@@ -173,6 +203,15 @@ function divide(a, b) {
     return a / b;
 }
 
+function sqrt(a) {
+    if (a < 0) return raiseError(2);
+    return a**.5;
+}
+
+function square(a) {
+    return a**2;
+}
+
 function operate() {
     switch(bookedOperator) {
         case '/':
@@ -180,7 +219,7 @@ function operate() {
                 currentDisplayString);
             parseDisplay();
             break;
-        case '*':
+        case 'x':
             currentDisplayString = mutltiply(previousDisplayString,
                 currentDisplayString);
             parseDisplay();
@@ -204,16 +243,12 @@ function raiseError(err) {
 }
 
 function disableButtons() {
-    numberButtons.forEach(x => 
-        x.removeEventListener('click', clickButton));
-    operatorButtons.forEach(x => 
+    enablableArray.forEach(x => 
         x.removeEventListener('click', clickButton));
 }
 
 function enableButtons() {
-    numberButtons.forEach(x => 
-        x.addEventListener('click', clickButton));
-    operatorButtons.forEach(x => 
+    enablableArray.forEach(x => 
         x.addEventListener('click', clickButton));
     specialButtons.forEach(x => 
         x.addEventListener('click', clickButton));

@@ -1,0 +1,4 @@
+Add sqrt, square and backspace buttons. Improve aesthetics
+
+Round the button, display and calculator corners. Put different
+colors for numbers, special keys and operators.
