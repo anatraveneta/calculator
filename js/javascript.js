@@ -90,6 +90,8 @@ function pushKey(e) {
     } else if (keyCode == 13) { //9 =
         pushedButton.key = '=';
         pushedButton.type = 'operator-key';
+    } else if (keyCode == 9) {
+        e.preventDefault();
     } else {
         return;
     }
@@ -97,6 +99,10 @@ function pushKey(e) {
 }
 
 function clickButton(e) {
+    if (e.pointerId == -1) {
+        this.blur();
+        return;
+    }
     pushedButton.key = this.getAttribute('id');
     pushedButton.type = this.getAttribute('data-key');
     this.blur();
