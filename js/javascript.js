@@ -92,6 +92,7 @@ function pushKey(e) {
         pushedButton.type = 'operator-key';
     } else if (keyCode == 9) {
         e.preventDefault();
+        return;
     } else {
         return;
     }

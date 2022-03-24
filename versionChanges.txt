@@ -1,1 +1,1 @@
-Disable tab behaviour. Disable clicking a button from the keyboard
+Fix minor bug
