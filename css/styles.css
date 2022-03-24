@@ -55,9 +55,6 @@ html {
     color: black;
     margin: none;
     flex: 0 1 75px;
-}
-
-button {
     border-radius: 10px;
 }
 
@@ -71,8 +68,17 @@ button {
     color: wheat;
 }
 
+.special-key:hover {
+    background-color: rgb(250,138,138);
+}
+
 #⌫ {
     background-color: lightsalmon;
+    color: wheat;
+}
+
+#⌫:hover {
+    background-color: rgb(265, 170, 132);
     color: wheat;
 }
 
@@ -81,7 +87,15 @@ button {
     color: white;
 }
 
+.number-key:hover {
+    background-color: rgb(85,85,85);
+}
+
 .operator-key {
     background-color: gray;
     color: white;
+}
+
+.operator-key:hover {
+    background-color: rgb(138, 138, 138);
 }

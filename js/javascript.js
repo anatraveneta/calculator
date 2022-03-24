@@ -35,6 +35,8 @@ const specialButtons = document.querySelectorAll('.special-key')
 const enablableArray = Array.from(numberButtons).
     concat(Array.from(operatorButtons));
 
+window.addEventListener('keydown', pushKey);
+
 
 resetCalc();
 
@@ -64,9 +66,45 @@ function initializeButtons() {
     }
 }
 
+function pushKey(e) {
+    const key = e.key;
+    const keyCode = e.keyCode;
+    const shiftKey = e.shiftKey;
+    const altKey = e.altKey;
+    if (numberKeys.includes(key)) { //0 numbers
+        pushedButton.key = key;
+        pushedButton.type = 'number-key';
+    } else if (operatorKeys.includes(key)) { //1 operators
+        pushedButton.key = key;
+        pushedButton.type = 'operator-key';
+    } else if (keyCode == 88 || key == '*') { //2 multiply 
+        pushedButton.key = 'x';
+        pushedButton.type = 'operator-key';
+    } else if (shiftKey && keyCode == 50) { //3 square
+        pushedButton.key = buttonLabels[5];
+        pushedButton.type = 'operator-key';
+    } else if (keyCode == 8) { //7 backspace
+        pushedButton.key = buttonLabels[1];
+        pushedButton.type = 'number-key';
+    } else if (keyCode == 46 || keyCode == 27) { //8 AC
+        pushedButton.key = buttonLabels[0];
+        pushedButton.type = 'special-key';
+    } else if (keyCode == 13) { //9 =
+        pushedButton.key = '=';
+        pushedButton.type = 'operator-key';
+    } else {
+        return;
+    }
+    switchAction();
+}
+
 function clickButton(e) {
     pushedButton.key = this.getAttribute('id');
     pushedButton.type = this.getAttribute('data-key');
+    switchAction();
+}
+
+function switchAction() {
     switch (pushedButton.type) {
         case 'number-key':
             pushNumber();
@@ -243,13 +281,17 @@ function raiseError(err) {
 }
 
 function disableButtons() {
-    enablableArray.forEach(x => 
-        x.removeEventListener('click', clickButton));
+    for (let x of enablableArray) {
+        x.removeEventListener('click', clickButton);
+        x.setAttribute('style', 'pointer-events: none;');
+    }
 }
 
 function enableButtons() {
-    enablableArray.forEach(x => 
-        x.addEventListener('click', clickButton));
+    for(let x of enablableArray) {
+        x.addEventListener('click', clickButton);
+        x.setAttribute('style', 'pointer-events: auto;');
+    }
     specialButtons.forEach(x => 
         x.addEventListener('click', clickButton));
 }
