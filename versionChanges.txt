@@ -1,1 +1,1 @@
-Add hover behaviour to the buttons. Use keyboard for the calculator
+Remove unused variable

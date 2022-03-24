@@ -70,7 +70,6 @@ function pushKey(e) {
     const key = e.key;
     const keyCode = e.keyCode;
     const shiftKey = e.shiftKey;
-    const altKey = e.altKey;
     if (numberKeys.includes(key)) { //0 numbers
         pushedButton.key = key;
         pushedButton.type = 'number-key';
