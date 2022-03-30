@@ -1,1 +1,1 @@
-Add icon
+Reduce max number of display characters to 12 (mobile appearance)

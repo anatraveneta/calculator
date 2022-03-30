@@ -16,7 +16,7 @@ const operatorKeys = ['\u00B1\u2A2F', '\u215F\u2A2F',
                         '/', 'x', '-', '+', '='];
 const errorArray = ['Overflow', 'Div. by zero',
                     'Im. Number']
-const maxPlaces = 13;
+const maxPlaces = 12;
 
 let pushedButton;
 let currentDisplayString;
